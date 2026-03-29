@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>College Portal | Previous Year Exam Papers</title>
+    <!-- Google Fonts & simple reset -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f4f7fc;
+            color: #1e2a3e;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+        }
+
+        /* main container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .header p {
+            color: #4a627a;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* two column layout: left (upload) & right (papers) */
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        /* left card - upload section */
+        .upload-card {
+            flex: 1.2;
+            min-width: 280px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08);
+            padding: 1.8rem;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .right-papers {
+            flex: 2;
+            min-width: 320px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08);
+            padding: 1.8rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 5px solid #2a5298;
+            padding-left: 1rem;
+        }
+        .section-title i {
+            color: #2a5298;
+            font-size: 1.4rem;
+        }
+
+        /* form styles */
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1f3a5f;
+            font-size: 0.9rem;
+        }
+        select, input[type="file"], input[type="text"] {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 18px;
+            border: 1.5px solid #e2e8f0;
+            background: #fefefe;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+        select:focus, input:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42,82,152,0.15);
+        }
+        .file-info {
+            font-size: 0.75rem;
+            color: #5c6f87;
+            margin-top: 0.4rem;
+        }
+        .btn-primary {
+            background: #1e3c72;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .btn-primary:hover {
+            background: #0f2b4f;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #eef2ff;
+            border: none;
+            padding: 0.7rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #1e3c72;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-secondary:hover {
+            background: #dfe6ff;
+        }
+
+        /* filter bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: #f8fafd;
+            padding: 1rem 1.2rem;
+            border-radius: 60px;
+            align-items: flex-end;
+        }
+        .filter-item {
+            flex: 1;
+            min-width: 140px;
+        }
+        .filter-item label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .generate-btn {
+            background: #2a5298;
+            border: none;
+            color: white;
+            padding: 0.65rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            height: 44px;
+            margin-top: 22px;
+        }
+        .generate-btn:hover {
+            background: #1d3f72;
+        }
+
+        /* paper list */
+        .papers-list {
+            margin-top: 1rem;
+        }
+        .paper-card {
+            background: #ffffff;
+            border: 1px solid #eef2f9;
+            border-radius: 24px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+            transition: 0.15s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .paper-card:hover {
+            background: #fbfeff;
+            border-color: #cddae9;
+        }
+        .paper-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .paper-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .badge-course {
+            background: #e6f0ff;
+            color: #1e3c72;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-year {
+            background: #e9ecef;
+            color: #2c3e66;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .paper-meta {
+            font-size: 0.75rem;
+            color: #5f7f9e;
+            display: flex;
+            gap: 1rem;
+            margin-top: 5px;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+        .download-btn, .delete-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.1s;
+            padding: 6px 8px;
+            border-radius: 30px;
+        }
+        .download-btn {
+            color: #2a6291;
+        }
+        .download-btn:hover {
+            background: #eef2ff;
+            color: #0f2b4f;
+        }
+        .delete-btn {
+            color: #b91c1c;
+        }
+        .delete-btn:hover {
+            background: #ffe8e8;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: #7c8ea0;
+            background: #fafcff;
+            border-radius: 30px;
+        }
+        hr {
+            margin: 1rem 0;
+            border-color: #eef2f8;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 2.5rem;
+            font-size: 0.75rem;
+            color: #6c86a3;
+        }
+        @media (max-width: 780px) {
+            body {
+                padding: 1rem;
+            }
+            .filter-bar {
+                border-radius: 24px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .generate-btn {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <h1><i class="fas fa-university"></i> College Paper Vault</h1>
+        <p>Upload, organize & access previous year exam papers · Select course & year to generate list</p>
+    </div>
+
+    <div class="dashboard">
+        <!-- LEFT: UPLOAD SECTION -->
+        <div class="upload-card">
+            <div class="section-title">
+                <i class="fas fa-cloud-upload-alt"></i> 
+                <span>Upload Paper</span>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-book-open"></i> Course Name</label>
+                <select id="uploadCourse">
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Electronics Engineering">Electronics Engineering</option>
+                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                    <option value="Civil Engineering">Civil Engineering</option>
+                    <option value="Business Administration">Business Administration</option>
+                    <option value="Mathematics">Mathematics</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-calendar-alt"></i> Exam Year</label>
+                <select id="uploadYear">
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-file-pdf"></i> Paper File (PDF / Image / Doc)</label>
+                <input type="file" id="paperFile" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                <div class="file-info">Allowed: PDF, JPG, PNG, DOC, DOCX (Max 5MB simulated)</div>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-tag"></i> Paper Title (optional)</label>
+                <input type="text" id="paperTitle" placeholder="e.g., Data Structures Final Exam">
+            </div>
+            <button id="uploadBtn" class="btn-primary"><i class="fas fa-arrow-up"></i> Upload Paper</button>
+            <div id="uploadMessage" style="margin-top: 1rem; font-size: 0.8rem; text-align: center; color: #2c6e2c;"></div>
+        </div>
+
+        <!-- RIGHT: VIEW & GENERATE PAPERS -->
+        <div class="right-papers">
+            <div class="section-title">
+                <i class="fas fa-scroll"></i>
+                <span>Exam Papers Repository</span>
+            </div>
+
+            <!-- Filter + generate section: course, year, generate button -->
+            <div class="filter-bar">
+                <div class="filter-item">
+                    <label><i class="fas fa-graduation-cap"></i> Course</label>
+                    <select id="filterCourse">
+                        <option value="all">All Courses</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Electronics Engineering">Electronics Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Mathematics">Mathematics</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label><i class="fas fa-calendar"></i> Year</label>
+                    <select id="filterYear">
+                        <option value="all">All Years</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <button id="generatePapersBtn" class="generate-btn"><i class="fas fa-sync-alt"></i> Generate</button>
+                </div>
+            </div>
+
+            <!-- Papers list container -->
+            <div id="papersContainer" class="papers-list">
+                <!-- dynamic papers will appear here -->
+                <div class="empty-message"><i class="fas fa-folder-open"></i> No papers uploaded. Use the upload form to add previous year papers.</div>
+            </div>
+            <hr>
+            <div style="display: flex; justify-content: flex-end;">
+                <button id="clearAllBtn" class="btn-secondary" style="background:#fee2e2; color:#a12222;"><i class="fas fa-trash-alt"></i> Clear All Papers</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-note">
+        <i class="fas fa-database"></i> All papers stored locally in your browser (IndexedDB) · Uploaded files are saved as data URLs
+    </div>
+</div>
+
+<script>
+    // ------------------------------
+    // Use IndexedDB for persistent local storage (real file data + metadata)
+    // Database: CollegePapersDB, store: papers
+    // ------------------------------
+    const DB_NAME = 'CollegePapersDB';
+    const STORE_NAME = 'papers';
+    let db = null;
+
+    // Open IndexedDB
+    function openDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, 1);
+            request.onerror = (event) => {
+                console.error("IndexedDB error", event);
+                reject("Could not open DB");
+            };
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                resolve(db);
+            };
+            request.onupgradeneeded = (event) => {
+                const dbRef = event.target.result;
+                if (!dbRef.objectStoreNames.contains(STORE_NAME)) {
+                    const store = dbRef.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                    store.createIndex('course', 'course', { unique: false });
+                    store.createIndex('year', 'year', { unique: false });
+                    store.createIndex('uploadDate', 'uploadDate', { unique: false });
+                }
+            };
+        });
+    }
+
+    // Helper: get all papers
+    function getAllPapers() {
+        return new Promise((resolve, reject) => {
+            if (!db) return reject("DB not ready");
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.getAll();
+            request.onsuccess = () => resolve(request.result || []);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    // Add paper (store metadata + file dataURL)
+    function addPaper(paperData) {
+        return new Promise((resolve, reject) => {
+            if (!db) return reject("DB not ready");
+            const transaction = db.transaction([STORE_NAME], 'readwrite');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.add(paperData);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    // Delete paper by id
+    function deletePaperById(id) {
+        return new Promise((resolve, reject) => {
+            if (!db) return reject("DB not ready");
+            const transaction = db.transaction([STORE_NAME], 'readwrite');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.delete(id);
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    // clear all papers
+    function clearAllPapers() {
+        return new Promise((resolve, reject) => {
+            if (!db) return reject("DB not ready");
+            const transaction = db.transaction([STORE_NAME], 'readwrite');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.clear();
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    // Render papers based on current filter (course, year)
+    let currentFilterCourse = 'all';
+    let currentFilterYear = 'all';
+
+    async function renderPapers() {
+        const container = document.getElementById('papersContainer');
+        if (!container) return;
+        try {
+            const allPapers = await getAllPapers();
+            let filtered = [...allPapers];
+            if (currentFilterCourse !== 'all') {
+                filtered = filtered.filter(p => p.course === currentFilterCourse);
+            }
+            if (currentFilterYear !== 'all') {
+                filtered = filtered.filter(p => p.year === currentFilterYear);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty-message"><i class="fas fa-archive"></i> No papers found for selected filters. Upload or change filters.</div>`;
+                return;
+            }
+
+            // sort by uploadDate descending (newest first)
+            filtered.sort((a,b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+
+            let html = '';
+            filtered.forEach(paper => {
+                const titleDisplay = paper.title ? paper.title : `Paper (${paper.course} ${paper.year})`;
+                const fileExt = paper.fileName ? paper.fileName.split('.').pop().toUpperCase() : 'FILE';
+                html += `
+                    <div class="paper-card" data-id="${paper.id}">
+                        <div class="paper-info">
+                            <div class="paper-title">
+                                <i class="fas fa-file-alt"></i> ${escapeHtml(titleDisplay)}
+                                <span class="badge-course">${escapeHtml(paper.course)}</span>
+                                <span class="badge-year">${escapeHtml(paper.year)}</span>
+                            </div>
+                            <div class="paper-meta">
+                                <span><i class="far fa-calendar-alt"></i> Uploaded: ${new Date(paper.uploadDate).toLocaleDateString()}</span>
+                                <span><i class="fas fa-file"></i> ${escapeHtml(paper.fileName || 'document')} (${fileExt})</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="download-btn" data-id="${paper.id}" title="Download Paper"><i class="fas fa-download"></i></button>
+                            <button class="delete-btn" data-id="${paper.id}" title="Delete Paper"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // attach event listeners to dynamic buttons
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const id = Number(btn.getAttribute('data-id'));
+                    await downloadPaperById(id);
+                });
+            });
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const id = Number(btn.getAttribute('data-id'));
+                    if (confirm('Delete this paper permanently?')) {
+                        await deletePaperById(id);
+                        await renderPapers();
+                        showUploadMessage('Paper deleted successfully', '#b91c1c');
+                    }
+                });
+            });
+        } catch(err) {
+            console.error("Render error", err);
+            container.innerHTML = `<div class="empty-message">⚠️ Error loading papers</div>`;
+        }
+    }
+
+    async function downloadPaperById(id) {
+        try {
+            const allPapers = await getAllPapers();
+            const paper = allPapers.find(p => p.id === id);
+            if (!paper || !paper.fileDataURL) {
+                alert('File data not available or corrupted.');
+                return;
+            }
+            // create download link
+            const link = document.createElement('a');
+            link.href = paper.fileDataURL;
+            link.download = paper.fileName || `paper_${paper.course}_${paper.year}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch(err) {
+            alert('Download failed');
+        }
+    }
+
+    // file to base64
+    function fileToDataURL(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(reader.error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // upload logic
+    async function handleUpload() {
+        const course = document.getElementById('uploadCourse').value;
+        const year = document.getElementById('uploadYear').value;
+        const fileInput = document.getElementById('paperFile');
+        const titleInput = document.getElementById('paperTitle').value.trim();
+        const file = fileInput.files[0];
+
+        if (!file) {
+            showUploadMessage('Please select a file to upload.', '#cc5500');
+            return;
+        }
+        // basic size check (5MB limit warning but not strict block)
+        if (file.size > 5 * 1024 * 1024) {
+            showUploadMessage('File exceeds 5MB. Consider smaller file (demo limit).', '#cc5500');
+            // still allow but show warning
+        }
+        try {
+            const fileDataURL = await fileToDataURL(file);
+            const newPaper = {
+                course: course,
+                year: year,
+                title: titleInput || `${course} ${year} Exam Paper`,
+                fileName: file.name,
+                fileDataURL: fileDataURL,
+                uploadDate: new Date().toISOString(),
+                fileSize: file.size
+            };
+            await addPaper(newPaper);
+            // reset file input & title but keep course/year
+            fileInput.value = '';
+            document.getElementById('paperTitle').value = '';
+            showUploadMessage('✅ Paper uploaded successfully!', '#2c6e2c');
+            // refresh displayed papers
+            await renderPapers();
+        } catch(err) {
+            console.error(err);
+            showUploadMessage('Upload failed: ' + err.message, '#b91c1c');
+        }
+    }
+
+    function showUploadMessage(msg, color) {
+        const msgDiv = document.getElementById('uploadMessage');
+        msgDiv.innerHTML = msg;
+        msgDiv.style.color = color;
+        setTimeout(() => {
+            if (msgDiv.innerHTML === msg) msgDiv.innerHTML = '';
+        }, 3000);
+    }
+
+    // generate function: sync filter dropdowns and refresh
+    function generatePapers() {
+        const courseSelect = document.getElementById('filterCourse');
+        const yearSelect = document.getElementById('filterYear');
+        currentFilterCourse = courseSelect.value;
+        currentFilterYear = yearSelect.value;
+        renderPapers();
+        // optional visual feedback
+        const genBtn = document.getElementById('generatePapersBtn');
+        genBtn.innerHTML = '<i class="fas fa-check-circle"></i> Generated!';
+        setTimeout(() => {
+            genBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Generate';
+        }, 800);
+    }
+
+    // clear all papers
+    async function handleClearAll() {
+        if (confirm('⚠️ WARNING: This will delete ALL uploaded papers permanently. Are you sure?')) {
+            await clearAllPapers();
+            await renderPapers();
+            showUploadMessage('All papers have been cleared.', '#a12222');
+        }
+    }
+
+    // helpers
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // init demo sample papers to showcase functionality (optional)
+    async function insertSamplePapers() {
+        const existing = await getAllPapers();
+        if (existing.length === 0) {
+            // insert a couple of dummy papers without actual binary large file? we can insert placeholder data note.
+            // but to demonstrate, we add two papers with small inline dummy text files (sample content).
+            const sample1 = {
+                course: "Computer Science",
+                year: "2022",
+                title: "Data Structures & Algorithms (End Sem)",
+                fileName: "DSA_2022_sample.pdf",
+                fileDataURL: "data:application/pdf;base64,JVBERi0xLjcKJb/3... (dummy content, not real pdf but shows download)",
+                uploadDate: new Date().toISOString(),
+                fileSize: 1234
+            };
+            const sample2 = {
+                course: "Electronics Engineering",
+                year: "2021",
+                title: "Signals & Systems Previous Year",
+                fileName: "Signals_2021.pdf",
+                fileDataURL: "data:application/pdf;base64,JVBERi0xLjQK... sample",
+                uploadDate: new Date(Date.now() - 86400000).toISOString(),
+                fileSize: 2345
+            };
+            // Only add if not present (check empty)
+            await addPaper(sample1);
+            await addPaper(sample2);
+            await renderPapers();
+        }
+    }
+
+    // event binding & initialization
+    window.addEventListener('DOMContentLoaded', async () => {
+        await openDB();
+        await renderPapers();
+        // optional: add sample papers only if DB is empty for demo
+        const all = await getAllPapers();
+        if (all.length === 0) {
+            await insertSamplePapers();
+        } else {
+            await renderPapers();
+        }
+
+        document.getElementById('uploadBtn').addEventListener('click', handleUpload);
+        document.getElementById('generatePapersBtn').addEventListener('click', generatePapers);
+        document.getElementById('clearAllBtn').addEventListener('click', handleClearAll);
+        
+        // also trigger generate on filter change if user wants, but explicit generate is clear.
+        document.getElementById('filterCourse').addEventListener('change', () => {});
+        document.getElementById('filterYear').addEventListener('change', () => {});
+    });
+</script>
+</body>
+</html>
